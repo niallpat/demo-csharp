@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Net;
 using System.Data;
 using OWASP.WebGoat.NET.App_Code;
 using OWASP.WebGoat.NET.App_Code.DB;
@@ -23,9 +24,10 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
             //context.Response.Write("Hello World");
 
             string query = context.Request["query"];
+            string encodedQuery = System.Net.WebUtility.HtmlEncode(query);
             
-            DataSet ds = du.GetCustomerEmails(query);
-            string json = Encoder.ToJSONSAutocompleteString(query, ds.Tables[0]);
+            DataSet ds = du.GetCustomerEmails(encodedQuery);
+            string json = Encoder.ToJSONSAutocompleteString(encodedQuery, ds.Tables[0]);
 
             if (json != null && json.Length > 0)
             {
